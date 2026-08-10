@@ -42,7 +42,7 @@ git clone https://github.com/dk1275/product-map-workflow.git \
   ~/.codex/skills/product-map-workflow
 ```
 
-##如果设置了 CODEX_HOME
+如果设置了 CODEX_HOME
 
 ```text
 $CODEX_HOME/skills/product-map-workflow
