@@ -36,10 +36,15 @@ agents/openai.yaml
 MIT License
 
 ## Codex安装
+
+```text
 git clone https://github.com/dk1275/product-map-workflow.git \
   ~/.codex/skills/product-map-workflow
+```
 
 ##如果设置了 CODEX_HOME
-$CODEX_HOME/skills/product-map-workflow
 
+```text
+$CODEX_HOME/skills/product-map-workflow
+```
 
