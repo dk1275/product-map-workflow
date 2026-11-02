@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Map Workflow"
+  short_description: "Enforce lean, map-driven task execution"
+  default_prompt: "Use $product-map-workflow to execute this task with the latest product map and minimal output."
