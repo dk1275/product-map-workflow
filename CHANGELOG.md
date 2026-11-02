@@ -47,13 +47,13 @@
 - 早期版本只有索引表格格式、没有"怎么用索引"，AI 仍可能一次读全量；
   本次补入按需读取协议后解决。改协议时不要降级回纯格式说明。
 
-## 2026-11-02（同步发布）
+## 2026-11-02（发布到 Gitee）
 
 ### Added
 
 - 建立 Gitee 镜像仓库 `dk1275/product-map-workflow`（公开），与 GitHub 双端同步。
 
-## 2026-11-02（README 改为纯安装文档）
+## 2026-11-02（README 第一版：收敛为纯安装文档）
 
 ### Updated
 
@@ -62,8 +62,7 @@
   GitHub → 校验 frontmatter → 已存在则 pull → 报告路径/来源/提交号。
   明确「成功标准只有 SKILL.md 可读且 frontmatter 完整」，不许拿 clone 退出码当成功。
 - 分平台给命令：macOS / Linux 用终端，Windows 用 PowerShell（含反引号续行提醒）。
-- 分源给地址：Gitee 作为推荐源（直连稳定），GitHub 作备选。
-- 每个平台补**无 git 降级方案**：Gitee 走 archive/main.zip，GitHub 走 codeload tar/zip。
+- 每个平台补**无 git 降级方案**：Gitee 走 `archive/main.zip`，GitHub 走 `codeload` tar/zip。
 - 排障补充实测错误：`Failed to connect to 127.0.0.1 port 7890`（本机代理配置）、
   `CONNECT tunnel failed, response 502`、`Recv failure: Operation timed out`。
 
@@ -73,3 +72,21 @@
   GitHub `codeload` tar + `--strip-components=1`。
 - 实测失败并写入排障：GitHub `git clone`（代理未运行时报 502，清空代理后超时）。
 
+## 2026-11-02（README 第二版：先安装，再讲价值）
+
+### Updated
+
+- **调整叙述顺序**：开头就是极简安装（macOS/Linux 一行、Windows PowerShell 一行），
+  再给两个源各自的地址与「可直接丢给 AI 的安装提示词」，价值论述放到安装之后。
+  第一版只讲安装、不讲为什么值得装，读者装完仍不知道这东西解决什么问题。
+- 新增价值论述：**这个 Skill 到底干嘛的** / **为什么很有必要装** /
+  **目标** / **它解决什么问题**（7 行对照表）/ **价值在哪**（省钱 / 少错 / 可沉淀 / 不跑偏）。
+- 安装提示词写明验收标准（`SKILL.md` + frontmatter + `name`），并禁止 AI 在验证失败时
+  说"装好了"；GitHub 版额外加一句「连不上别重试超过两次，直接换 Gitee」。
+- 明确 Gitee 为推荐源，附原因（GitHub git 通道在部分网络不通）。
+
+### Verified
+
+- 实测 macOS 一行命令：`mkdir -p ~/.workbuddy/skills && git clone <Gitee> <目标>` 通过，
+  装出 8 个文件且 frontmatter 完整。
+- 实测 Gitee `archive/main.zip` + `cp -R` 降级方案通过。
