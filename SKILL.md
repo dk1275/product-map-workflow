@@ -1,9 +1,25 @@
 ---
 name: product-map-workflow
-description: Mandatory lean, product-map-driven workflow for every user request, especially project, product, UI, API, code, and content changes. Use when the agent must first load the available Skill instructions and the latest relevant product-map, reuse existing solutions, minimize scope and token use, update the map as requirements evolve, and deliver a complete concise result. The product-map must carry a mandatory 源码索引 (source index) — path, responsibility, trigger scenario, key symbols, status — for every business-carrying source file, plus an on-demand read protocol that forbids whole-directory dumps, caps each read at 3 files with a stated reason, and never re-reads an unchanged file.
+display_name: Token 省钱大师
+display_name_en: Token Saver
+description: 让 AI 干活前先读产品地图和源码索引，按需读取，杜绝一次性读全量代码。触发词：省 token、省钱、AI 读太多代码、上下文爆了、乱翻代码、项目地图、源码索引、这段代码在哪、换 AI 接不上、总改错地方。
+description_zh: 给项目建一份带源码索引的产品地图，AI 每次只读必要的 2-3 个文件。省 token、少改错、换人换 AI 都能接上。
+description_en: Gives the agent a product map with a source index so it reads only the 2-3 files it needs. Cheaper, fewer wrong edits, resumable across sessions.
+version: 1.0.0
+author: dk1275
+examples_zh:
+  - 购物车总价算错了，帮我看看
+  - 这个项目 AI 每次都要把全部代码读一遍，太费 token 了
+  - 换了个 AI 接手，怎么让它快速上手
+examples_en:
+  - The cart total is wrong, take a look
+  - The agent re-reads the whole repo every time — too expensive
+  - A new agent is taking over; how does it get up to speed
 ---
 
-<!-- 分享注释：通用的产品图谱驱动工作流，强调先读规则与地图、复用成熟方案、极简交付并同步沉淀。 -->
+> **解决什么**：AI 每次开新会话都从零开始，面对你的项目只有两条路 —— 全读（几十个文件塞爆
+> 上下文）或者瞎猜（改错地方）。本技能要求先建、先读一份带**源码索引**的产品地图，把改动
+> 定位到具体文件，单次最多读 3 个，改完把新情况写回去。省 token、少改错、能交接。
 
 # Product Map Workflow
 

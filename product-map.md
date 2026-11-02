@@ -29,7 +29,7 @@
 
 | 路径 | 职责 | 触发场景 | 关键符号 | 状态 |
 |---|---|---|---|---|
-| `SKILL.md` | 工作流规则正文：执行顺序、产品地图协议、源码索引协议、防缺陷规则、精简规则、交付契约 | 改规则 / 调索引协议 / 加防缺陷条目 / 改交付要求 | `Source index protocol`、`On-demand read protocol`、`Symptom → file table`、`Index prohibitions`、`Index maintenance`、`Completion contract` | 已验证 |
+| `SKILL.md` | 工作流规则正文 + WorkBuddy 市场 frontmatter（display_name / description_zh/en / examples / version / author） | 改规则 / 调索引协议 / 加防缺陷条目 / 改交付要求 / 改上架信息 | `Source index protocol`、`On-demand read protocol`、`Symptom → file table`、`Completion contract` | 已验证 |
 | `README.md` | 面向使用者：极简安装（一行命令 + Gitee/GitHub 两源 + 给 AI 的安装提示词）+ 价值论述（是什么/为什么装/目标/解决什么问题/价值） | 改安装方式 / 换源 / 改价值表述 / 改 AI 提示词 | `## 快速安装`、`## 为什么很有必要装`、`## 价值在哪` | 已验证 |
 | `CHANGELOG.md` | 按日期记录规则变更 | 每次改 `SKILL.md` 或 `README.md` 时 | 日期小节 + `Added` / `Updated` | 已验证 |
 | `product-map.md` | 本文件：地图主体 + 源码索引 + 坑点沉淀 | 每轮开始读、每次改动后同步 | `## 源码索引`、`## 历史坑点` | 已验证 |

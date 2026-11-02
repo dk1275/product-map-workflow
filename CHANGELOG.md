@@ -90,3 +90,27 @@
 - 实测 macOS 一行命令：`mkdir -p ~/.workbuddy/skills && git clone <Gitee> <目标>` 通过，
   装出 8 个文件且 frontmatter 完整。
 - 实测 Gitee `archive/main.zip` + `cp -R` 降级方案通过。
+
+## 2026-11-02（v1.0.0 · 适配 WorkBuddy 技能市场上架）
+
+### Added
+
+- frontmatter 按开放平台「技能基础结构」补齐必备字段：
+  `display_name`（Token 省钱大师）、`display_name_en`（Token Saver）、
+  `description`（含中文触发词）、`description_zh`、`description_en`、
+  `version`（1.0.0）、`author`。
+- 可选字段 `examples_zh` / `examples_en` 各 3 条，用于市场详情页【试试这样用】。
+- 正文开头补一段中文「解决什么」，给市场审阅者和用户看。
+
+### Changed
+
+- `description` 改为中英混合并加入触发词（省 token、上下文爆了、乱翻代码、
+  源码索引、换 AI 接不上…），提升中文场景命中率。
+- 上传包结构收敛为官方要求的最小形态：`product-map-workflow/SKILL.md`，
+  不含 README 等其他文件，避免解析失败。
+
+### Note
+
+- 官方结构支持的可选目录 `references/` / `scripts/` / `templates/` 本技能均未使用，
+  规则全部在 SKILL.md 内，减少 AI 漏读引用的风险。
+- README 保留在 Git 仓库，不进入上架包。
