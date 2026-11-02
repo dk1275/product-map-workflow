@@ -30,7 +30,7 @@
 | 路径 | 职责 | 触发场景 | 关键符号 | 状态 |
 |---|---|---|---|---|
 | `SKILL.md` | 工作流规则正文：执行顺序、产品地图协议、源码索引协议、防缺陷规则、精简规则、交付契约 | 改规则 / 调索引协议 / 加防缺陷条目 / 改交付要求 | `Source index protocol`、`On-demand read protocol`、`Symptom → file table`、`Index prohibitions`、`Index maintenance`、`Completion contract` | 已验证 |
-| `README.md` | 面向人的说明：索引表字段含义、按需读取协议、症状表、禁止行为、安装路径 | 改对外说明 / 加安装方式 / 同步规则到人读版本 | `## 源码索引（核心）`、`### 按需读取协议` | 已验证 |
+| `README.md` | 只讲安装：源地址、安装位置、Agent 统一流程、终端/PowerShell 命令、无 git 降级、排障 | 改安装方式 / 换源 / 加平台 / 加降级方案 | `## 一、给 Agent 的统一安装方式`、`## 二、macOS / Linux`、`## 三、Windows` | 已验证 |
 | `CHANGELOG.md` | 按日期记录规则变更 | 每次改 `SKILL.md` 或 `README.md` 时 | 日期小节 + `Added` / `Updated` | 已验证 |
 | `product-map.md` | 本文件：地图主体 + 源码索引 + 坑点沉淀 | 每轮开始读、每次改动后同步 | `## 源码索引`、`## 历史坑点` | 已验证 |
 | `openai.yaml` | Codex 界面元数据（显示名、简述、默认提示） | 改展示名 / 改默认提示语 | `interface.display_name`、`interface.default_prompt` | 已实现 |

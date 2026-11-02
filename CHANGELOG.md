@@ -52,3 +52,24 @@
 ### Added
 
 - 建立 Gitee 镜像仓库 `dk1275/product-map-workflow`（公开），与 GitHub 双端同步。
+
+## 2026-11-02（README 改为纯安装文档）
+
+### Updated
+
+- README 收敛为**只讲安装**，规范细节全部留在 `SKILL.md`，避免两处规则分叉。
+- 新增「给 Agent 的统一安装方式」：判平台 → 判客户端 → 建父目录 → 先试 Gitee 再换
+  GitHub → 校验 frontmatter → 已存在则 pull → 报告路径/来源/提交号。
+  明确「成功标准只有 SKILL.md 可读且 frontmatter 完整」，不许拿 clone 退出码当成功。
+- 分平台给命令：macOS / Linux 用终端，Windows 用 PowerShell（含反引号续行提醒）。
+- 分源给地址：Gitee 作为推荐源（直连稳定），GitHub 作备选。
+- 每个平台补**无 git 降级方案**：Gitee 走 archive/main.zip，GitHub 走 codeload tar/zip。
+- 排障补充实测错误：`Failed to connect to 127.0.0.1 port 7890`（本机代理配置）、
+  `CONNECT tunnel failed, response 502`、`Recv failure: Operation timed out`。
+
+### Verified
+
+- 实测通过：Gitee `git clone`、Gitee `archive/main.zip` + `cp -R`、
+  GitHub `codeload` tar + `--strip-components=1`。
+- 实测失败并写入排障：GitHub `git clone`（代理未运行时报 502，清空代理后超时）。
+

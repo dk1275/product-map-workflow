@@ -1,128 +1,211 @@
 # product-map-workflow
 
-一个精简的任务执行 Skill：先读规则与产品图谱，明确目标，复用已有方案，只做必要改动，
-完成后同步更新产品图谱。
+精简的任务执行 Skill：先读规则和产品地图再动手，用**源码索引**定位文件、按需读取，
+改完同步地图。
 
-**强制要求产品地图带「源码索引」** —— 让 AI 知道每段代码在哪个文件、什么时候该读它，
-从根上杜绝"一次性读全量源码"。
-
-## 适用场景
-
-项目、产品、页面、接口、代码、内容，以及任何需要持续遵循统一工作流的任务。
-
-## 核心流程
-
-1. 读取 Skill 规则。
-2. 读取最新 product-map 的相关节点。
-3. 锁定核心目标和最小范围。
-4. 优先复用已有方案。
-5. 极简实现并完成验证。
-6. 同步更新 product-map（含源码索引）。
-7. 简洁交付可用结果。
+规则正文在 [`SKILL.md`](./SKILL.md)，本文件只讲**怎么装**。
 
 ---
 
-## 源码索引（核心）
+## 源
 
-产品地图必须有一节 `源码索引`。它的目的**不是写文档**，是阻止 AI 去读整个代码库。
-只写"产品该做什么"、不写"代码在哪"，等于每个任务都从头重新探索一遍。
+两个源，任选其一，内容一致。
 
-### 索引表
-
-每个承载业务的源文件一行：
-
-| 路径 | 职责 | 触发场景 | 关键符号 | 状态 |
-|---|---|---|---|---|
-| `utils/request.js` | 统一请求封装、token 携带、错误提示 | 接口报错 / 401 / 超时 | `request()`、拦截器 | 已验证 |
-| `pages/cart/cart.js` | 购物车渲染、选中、数量、总价 | 购物车数据不对 / 总价算错 | `onSelect`、`calcTotal` | 已实现 |
-
-| 列 | 填写要求 |
-|---|---|
-| **路径** | 相对项目根，必须真实存在 |
-| **职责** | 一句话说它 own 什么，不许复述文件名 |
-| **触发场景** | 什么症状/任务才值得读这个文件。**这一列最省 token：没有匹配的触发，就不读** |
-| **关键符号** | 类 / 函数 / 端点 / CLI 参数 / 配置键，让人直接跳到那一行 |
-| **状态** | `已实现` / `已验证` / `待改` / `废弃`。已实现只代表写完，不代表验过 |
-
-项目有共享模块时，可加第六列 `被依赖`（谁 import 它 = 改动的爆炸半径）；
-页面 / 路由 / 资源型项目每个文件都是叶子，不用加。
-
-### 按需读取协议（强制）
-
-省 token 全靠这一条。破了就算工作流失败。
-
-1. **禁止索要整个目录**，禁止全量源码 dump。
-2. 先定位：拿症状或需求去对 `触发场景` 或下方症状表。
-3. 输出**最多 3 个文件**的清单，每个写清为什么要它。
-4. 只读这些。如果证据指向别处，再列下一批 3 个，**不许扩到整个文件夹**。
-5. **已读且没变过的文件，不再索要**，直接用已有的。
-6. 不做投机性依赖拉取。说不出触发理由的，不许读。
-
-交付时必须带 `涉及文件`：列出实际读过或改过的每个文件。
-
-### 症状 → 文件
-
-让第一次就读对：
-
-| 症状 | 先查 | 再查 |
+| 源 | 地址 | 说明 |
 |---|---|---|
-| 接口报错 / 401 / 超时 | 统一请求入口 | 出问题的调用处 |
-| 数据不显示 / 渲染为空 | 该页面或组件的逻辑文件 | 接口返回结构 |
-| 样式错乱 | 该页面样式 | 全局样式 |
-| 组件行为异常 | 该组件目录 | 调用它的页面 |
-| 全局状态 / 登录异常 | 应用入口 | 状态定义处 |
+| **Gitee**（推荐） | `https://gitee.com/dk1275/product-map-workflow.git` | 国内直连稳定 |
+| GitHub | `https://github.com/dk1275/product-map-workflow.git` | git 通道可能不通，见降级方案 |
 
-行名按项目改，`先查 / 再查` 的形状别丢。
+## 安装位置
 
-### 禁止行为
+| 客户端 | 目标目录 |
+|---|---|
+| WorkBuddy / CodeBuddy | `~/.workbuddy/skills/product-map-workflow` |
+| Codex | `~/.codex/skills/product-map-workflow` |
 
-- 索要整个目录或整棵源码树。
-- 业务任务里去读静态资源、lockfile、构建产物、三方 vendored 代码、IDE 配置。
-- 重复索要本次已读且未变的文件。
-- "以防万一"去拉没有任何症状或需求指向的依赖。
-- 索引里写密钥、token、绝对机器路径 —— 只写配置键名。
+Windows 把 `~` 换成 `%USERPROFILE%`（PowerShell 里用 `$env:USERPROFILE`）。
 
-### 维护规则
-
-- **只索引承载业务的源码。** 排除 `node_modules`、`.venv`、构建产物、缓存、
-  三方 vendored、生成文件、二进制、lockfile、测试夹具。
-- 源文件超过约 15 个后，按 `功能节点` 分组。平铺列表到那个规模就看不动了。
-- 增删改文件、或改变某文件的职责，**必须在同一个任务里同步索引**。
-  过期的索引比没有更糟 —— 它会把下一个 agent 指到错的文件。
-- 索引要和 `功能节点` 对得上：一个节点没有对应索引文件，要么没实现，要么没记录，说清是哪种。
-- 每格一行。需要写一段话的细节，归 `功能节点` 或 `历史坑点`。
-- 非项目场景或单文件请求，不要造索引。
+两个客户端都要时，装一份再复制过去，不要重复克隆。
 
 ---
 
-## 安装
+## 一、给 Agent 的统一安装方式
 
-### WorkBuddy / CodeBuddy
+照顺序做，不用回头问用户选哪个源。
+
+1. **判平台**
+   - `uname -s` 返回 `Darwin` / `Linux` → 走第二章的终端命令
+   - PowerShell 里 `$env:OS -eq "Windows_NT"` → 走第三章的 PowerShell 命令
+
+2. **判客户端**
+   - 装 WorkBuddy → `~/.workbuddy/skills/`
+   - 装 Codex → `~/.codex/skills/`
+   - 两个都要 → 先装一份，再整目录复制
+
+3. **建父目录**：目标目录的父级 `skills/` 不存在就先建。
+
+4. **克隆**：**先试 Gitee**，报错再换 GitHub，再不行用降级方案（tar / zip）。
+
+5. **校验（必做）**
+   - 目标目录下存在 `SKILL.md`
+   - 文件开头是 `---` 开头的 frontmatter，含 `name: product-map-workflow` 和 `description:`
+   - 任一不满足 → 安装失败，报告真实报错，**不要凭 clone 退出码判成功**
+
+6. **目录已存在时**
+   - 是 git 仓库 → `git pull` 更新
+   - 不是 → 先备份再整目录覆盖
+
+7. **报告**：实际路径、来源（Gitee / GitHub / 压缩包）、`git log -1 --oneline` 的提交号
+
+**成功标准只有一条**：`SKILL.md` 可读且 frontmatter 完整。
+
+---
+
+## 二、macOS / Linux（终端）
+
+### 安装
 
 ```bash
+# Gitee（推荐，先试这个）
+mkdir -p ~/.workbuddy/skills
+git clone https://gitee.com/dk1275/product-map-workflow.git \
+  ~/.workbuddy/skills/product-map-workflow
+```
+
+```bash
+# GitHub（Gitee 不通时）
+mkdir -p ~/.workbuddy/skills
 git clone https://github.com/dk1275/product-map-workflow.git \
   ~/.workbuddy/skills/product-map-workflow
 ```
 
-### Codex
+装给 Codex，把 `~/.workbuddy/skills` 换成 `~/.codex/skills`：
 
 ```bash
-git clone https://github.com/dk1275/product-map-workflow.git \
+mkdir -p ~/.codex/skills
+git clone https://gitee.com/dk1275/product-map-workflow.git \
   ~/.codex/skills/product-map-workflow
 ```
 
-设了 `CODEX_HOME` 时：
+### 更新
 
-```text
-$CODEX_HOME/skills/product-map-workflow
+```bash
+git -C ~/.workbuddy/skills/product-map-workflow pull
 ```
 
-至少保留：
+### 降级：没有 git，或两个源都连不上
 
-```text
-SKILL.md
-openai.yaml
+```bash
+# Gitee 压缩包
+mkdir -p ~/.workbuddy/skills/product-map-workflow
+curl -L https://gitee.com/dk1275/product-map-workflow/repository/archive/main.zip \
+  -o /tmp/pmw.zip
+unzip -q /tmp/pmw.zip -d /tmp/pmw
+cp -R /tmp/pmw/product-map-workflow-main/. ~/.workbuddy/skills/product-map-workflow/
 ```
+
+```bash
+# GitHub 压缩包
+mkdir -p ~/.workbuddy/skills/product-map-workflow
+curl -L https://codeload.github.com/dk1275/product-map-workflow/tar.gz/refs/heads/main \
+  | tar xz -C ~/.workbuddy/skills/product-map-workflow --strip-components=1
+```
+
+---
+
+## 三、Windows（PowerShell）
+
+### 安装
+
+```powershell
+# Gitee（推荐，先试这个）
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.workbuddy\skills" | Out-Null
+git clone https://gitee.com/dk1275/product-map-workflow.git `
+  "$env:USERPROFILE\.workbuddy\skills\product-map-workflow"
+```
+
+```powershell
+# GitHub（Gitee 不通时）
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.workbuddy\skills" | Out-Null
+git clone https://github.com/dk1275/product-map-workflow.git `
+  "$env:USERPROFILE\.workbuddy\skills\product-map-workflow"
+```
+
+装给 Codex，把 `.workbuddy\skills` 换成 `.codex\skills`：
+
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
+git clone https://gitee.com/dk1275/product-map-workflow.git `
+  "$env:USERPROFILE\.codex\skills\product-map-workflow"
+```
+
+> PowerShell 的续行符是反引号 `` ` ``，不是反斜杠。粘不进去就整行连成一行跑。
+
+### 更新
+
+```powershell
+git -C "$env:USERPROFILE\.workbuddy\skills\product-map-workflow" pull
+```
+
+### 降级：没有 git，或两个源都连不上
+
+```powershell
+$dest = "$env:USERPROFILE\.workbuddy\skills\product-map-workflow"
+$zip  = "$env:TEMP\pmw.zip"
+$tmp  = "$env:TEMP\pmw"
+Invoke-WebRequest -Uri "https://gitee.com/dk1275/product-map-workflow/repository/archive/main.zip" -OutFile $zip
+Expand-Archive -Path $zip -DestinationPath $tmp -Force
+New-Item -ItemType Directory -Force -Path $dest | Out-Null
+Copy-Item "$tmp\product-map-workflow-main\*" $dest -Recurse -Force
+```
+
+GitHub 源把 `Invoke-WebRequest` 那行换成：
+
+```powershell
+Invoke-WebRequest -Uri "https://codeload.github.com/dk1275/product-map-workflow/zip/refs/heads/main" -OutFile $zip
+```
+
+---
+
+## 装完检查
+
+```bash
+# macOS / Linux
+head -5 ~/.workbuddy/skills/product-map-workflow/SKILL.md
+```
+
+```powershell
+# Windows
+Get-Content "$env:USERPROFILE\.workbuddy\skills\product-map-workflow\SKILL.md" -TotalCount 5
+```
+
+应看到以 `---` 开头的 frontmatter，里面有 `name: product-map-workflow`。
+
+---
+
+## 常见问题
+
+**`Failed to connect to 127.0.0.1 port 7890`**
+git 配了指向 `127.0.0.1:7890` 的代理但代理没开。清掉后重试：
+
+```bash
+git -c "http.https://github.com.proxy=" clone <地址> <目标目录>
+```
+
+```powershell
+git -c "http.https://github.com.proxy=" clone <地址> <目标目录>
+```
+
+**`CONNECT tunnel failed, response 502` / `Recv failure: Operation timed out`**
+GitHub 的 git 通道不可用。换 Gitee，或用上面的压缩包降级方案（HTTPS 下载通常还能走）。
+
+**`destination path already exists`**
+目录已存在。`git -C <目标目录> pull` 更新；不是 git 仓库就先移走旧目录。
+
+**装完 Agent 没识别到**
+确认装在客户端实际读取的目录下，且 `SKILL.md` 在目录第一层（不是套了一层子目录）。
+
+---
 
 ## 许可证
 
