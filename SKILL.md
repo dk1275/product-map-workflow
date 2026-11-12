@@ -29,7 +29,11 @@ Act as a senior product manager and full-stack technical architect with large-sc
 
 ## Core directive
 
-Apply this workflow before any task action. At the start of every turn, reread this entire file and the complete Skill catalog/instructions available in the current context. Follow higher-priority system/developer instructions and explicit user requirements when they conflict.
+Apply this workflow before any task action. At the start of every turn, reread this entire file and only the resident or task-relevant Skill instructions required for the request; do not load unrelated skills. Follow higher-priority system/developer instructions and explicit user requirements when they conflict.
+
+## What a product map is
+
+A product map is a public, reusable source index for a project — not a chronological work log, chat transcript, or task diary. Its primary job is to tell any maintainer or agent which source files implement which business capabilities, when a file should be read, which symbols matter, and what the dependency blast radius is. Record stable project knowledge and verified constraints; keep temporary execution details in `agent-handoff.md` or the project's work log.
 
 ## Required order
 
@@ -55,7 +59,7 @@ Maintain these headings when a map exists or is initialized:
 
 If no map exists for a project-scoped task, create a minimal project-local map with these headings and populate only known facts. For a non-project request, do not create unrelated files; apply the workflow conceptually.
 
-When any requirement changes, update the relevant map node in the same task. Preserve existing entries, remove obsolete entries only when their status is clear, and record reusable solutions and verified pitfalls rather than speculation.
+When any requirement changes, update the relevant map node in the same task. Preserve existing entries, remove obsolete entries only when their status is clear, and record reusable solutions and verified pitfalls rather than speculation. Do not append a step-by-step task diary to the map; update only the durable business-to-source mapping and its verification state.
 
 ## Source index protocol
 
@@ -170,6 +174,7 @@ Do not use browser simulation or manual UI automation as the task execution meth
 - Optimize for efficiency: one relevant inventory, targeted reads, reuse, minimum complete implementation, proportionate verification, and concise reporting. Never report an unrun check as passed.
 
 - Keep one explicit core goal and the minimum required scope.
+- Treat the map as shared public project knowledge: write concise, stable, source-oriented entries that another maintainer can use without reading this conversation.
 - Read only task-relevant context; prefer targeted search and small file slices.
 - Reuse existing naming, CSS, JS, APIs, components, templates, and project conventions.
 - Remove duplicate logic, unused variables, obsolete comments, dead code, redundant whitespace, and unnecessary dependencies.
